@@ -1,0 +1,1010 @@
+openapi: 3.0.1
+info:
+  title: NJIT Course System
+  description: 'This is the NJIT course scheduling system as created by Megan Machado for IS421-001, using the Swagger Editor.' 
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+- url: https://petstore.swagger.io/v2
+- url: http://petstore.swagger.io/v2
+
+
+tags:
+- name: User
+  description: Operations about users
+    
+- name: Courses
+  description: Operations about courses
+  
+- name: Course Section
+  description: Operations about course sections
+  
+- name: Section Enrollment
+  description: Operations about section enrollment
+  
+- name: Section Assignment Submission
+  description: Operations about section assignment submission
+    
+paths:
+  /User/UserName:
+    post:
+      tags:
+      - User
+      summary: Add a new user to the system
+      description: Creates user object for system
+      operationId: addUser
+      requestBody:
+        description: Created user object
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
+      
+  /User/Password: 
+    post:
+      tags:
+      - User
+      summary: Add a password to the user's account
+      operationId: addPassword
+      requestBody:
+        description: Password object that is added by the user to manage their account
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        405:
+          description: Invalid input
+          content: {}
+      security:
+      - system_auth:
+        - write:user
+        - read:user
+      x-codegen-request-body-name: body
+      
+  /User/Email: 
+    post:
+      tags:
+      - User
+      summary: Add an email to the user's account
+      operationId: addEmail
+      requestBody:
+        description: Email object that is added by the user to manage their account
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        405:
+          description: Invalid input
+          content: {}
+      security:
+      - system_auth:
+        - write:user
+        - read:user
+      x-codegen-request-body-name: body    
+      
+  /User/Status: 
+    post:
+      tags:
+      - User
+      summary: User can add a status to their account
+      description: Status object set by user to show their availability in the system
+      operationId: addStatus
+      parameters:
+      - name: status
+        in: query
+        description: Status values that need to be considered for filter
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+            default: Online
+            enum:
+            - Online
+            - Offline
+            - Busy
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+        400:
+          description: Invalid status value
+          content: {}
+      security:
+      - system_auth:
+        - write:pets
+        - read:pets
+      
+  /User/SystemRoleID: 
+    post:
+      tags:
+      - User
+      summary: Add an unqiue ID to the user's account
+      operationId: addSystemRoleID
+      requestBody:
+        description: System role object that is added to the user's account as a unique ID number
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        405:
+          description: Invalid input
+          content: {}
+      security:
+      - system_auth:
+        - write:user
+        - read:user
+      x-codegen-request-body-name: body
+      
+  /User/CreatedDate: 
+    post:
+      tags:
+      - User
+      summary: Add a created date to the user's account
+      operationId: addCreatedDate
+      requestBody:
+        description: Date object that is added to the user's account to determine their system join date
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        405:
+          description: Invalid input
+          content: {}
+      security:
+      - system_auth:
+        - write:user
+        - read:user
+      x-codegen-request-body-name: body   
+      
+  /User/UpdatedDate: 
+    post:
+      tags:
+      - User
+      summary: Add updated date to the user's account
+      operationId: addUpdateDate
+      requestBody:
+        description: Date object that is added to the user's account to determine the last date of account update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        405:
+          description: Invalid input
+          content: {}
+      security:
+      - system_auth:
+        - write:user
+        - read:user
+      x-codegen-request-body-name: body     
+      
+      
+      
+  /course/CourseTitle:
+    post:
+      tags:
+      - Courses
+      summary: Creates a title associate with a course
+      description: Title object that is added to the course
+      operationId: addCourseTitle
+      requestBody:
+        description: Created user object
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Course'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
+        
+  /course/Description:
+    post:
+      tags:
+      - Courses
+      summary: Creates a description for the course
+      description: Description object that is added to the course
+      operationId: addDescription
+      requestBody:
+        description: Created user object
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Course'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
+        
+  /course/CreatedDate:
+    post:
+      tags:
+      - Courses
+      summary: Creates a created date for course
+      operationId: addCourseCreatedDate
+      requestBody:
+        description: Created user object
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Course'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
+        
+  /course/UpdatedDate:
+    post:
+      tags:
+      - Courses
+      summary: Creates an updated date for course
+      operationId: addCourseUpdatedDate
+      requestBody:
+        description: Created user object
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Course'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
+        
+  /course/AssignmentTitle:
+    post:
+      tags:
+      - Courses
+      summary: Creates an assignment title for assignment in course
+      description: String object which contains the title for an assignment in a course
+      operationId: addAssignmentTitle
+      requestBody:
+        description: Created user object
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Course'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
+      
+  /course/AssignmentDescription:
+    post:
+      tags:
+      - Courses
+      summary: Creates an assignment description
+      operationId: addAssignmentDescription
+      requestBody:
+        description: Created user object
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Course'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
+      
+  /course/CourseID:
+    post:
+      tags:
+      - Courses
+      summary: Creates a CourseID
+      description: CourseID object which creates a unique ID associated with a course
+      operationId: addCourseID
+      requestBody:
+        description: Created user object
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Course'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
+
+
+
+  /courseSection/{CourseID}:
+    get:
+      tags:
+      - Course Section
+      summary: Get CourseID
+      description: Retreive unique ID associated with individual course
+      operationId: getCourseID
+      parameters:
+      - name: CourseID
+        in: path
+        description: ID of course to return
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CourseSection'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseSection'
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Course ID not found
+          content: {}
+      security:
+      - api_key: []
+      
+  /courseSection/StartDate:
+    post:
+      tags:
+      - Course Section
+      summary: Creates start date for course
+      operationId: addStartDate
+      requestBody:
+        description: Date object associated with start date for individual course
+        content:
+          '*/*':
+            schema:
+              type: string
+              format: date-time
+              items:
+                $ref: '#/components/schemas/CourseSection'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
+      
+  /courseSection/EndDate:
+    post:
+      tags:
+      - Course Section
+      summary: Creates end date for course
+      operationId: addEndDate
+      requestBody:
+        description: Date object associated with end date for course
+        content:
+          '*/*':
+            schema:
+              type: string
+              format: date-time
+              items:
+                $ref: '#/components/schemas/CourseSection'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
+      
+  /courseSection/{CreatedDate}:
+    get:
+      tags:
+      - Course Section
+      summary: Get created date for course
+      operationId: getCreatedDate
+      parameters:
+      - name: CreatedDate
+        in: path
+        description: Created date of course to return
+        required: true
+        schema:
+          type: string
+          format: date
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CourseSection'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseSection'
+        400:
+          description: Invalid date supplied
+          content: {}
+        404:
+          description: Created date not found
+          content: {}
+      security:
+      - api_key: []
+          
+  /courseSection/{UpdatedDate}:
+    get:
+      tags:
+      - Course Section
+      summary: Gets updated date for course section
+      operationId: getUpdatedDate
+      parameters:
+      - name: UpdatedDate
+        in: path
+        description: Updated date of course to return
+        required: true
+        schema:
+          type: string
+          format: date
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CourseSection'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseSection'
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Course ID not found
+          content: {}
+      security:
+      - api_key: []
+        
+        
+          
+          
+  /sectionEnrollment/{SectionID}:
+    get:
+      tags:
+      - Section Enrollment
+      summary: Get sectionID
+      operationId: getSectionID
+      description: Get unique section ID object
+      parameters:
+      - name: SectionID
+        in: path
+        description: Get SectionID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SectionEnrollment'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SectionEnrollment'
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Section ID not found
+          content: {}
+      security:
+      - api_key: []
+          
+  /sectionEnrollment/{UserID}:
+    get:
+      tags:
+      - Section Enrollment
+      summary: Get user ID
+      operationId: getUserID
+      description: Get unique user ID object
+      parameters:
+      - name: UserID
+        in: path
+        description: Get UserID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SectionEnrollment'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SectionEnrollment'
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: User ID not found
+          content: {}
+      security:
+      - api_key: []  
+    
+  /sectionEnrollment/{CreatedDate}:
+    get:
+      tags:
+      - Section Enrollment
+      summary: Get created date
+      operationId: getSectionCreatedDate
+      description: Get created date for section
+      parameters:
+      - name: CreatedDate
+        in: path
+        description: Get created date
+        required: true
+        schema:
+          type: string
+          format: date
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SectionEnrollment'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SectionEnrollment'
+        400:
+          description: Invalid date supplied
+          content: {}
+        404:
+          description: Created date not found
+          content: {}
+      security:
+      - api_key: []
+          
+  /sectionEnrollment/{StartDate}:
+    get:
+      tags:
+      - Section Enrollment
+      summary: Get section start date
+      operationId: getStartDate
+      description: Get start date for section of course
+      parameters:
+      - name: StartDate
+        in: path
+        description: Get start date
+        required: true
+        schema:
+          type: string
+          format: date
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SectionEnrollment'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SectionEnrollment'
+        400:
+          description: Invalid date supplied
+          content: {}
+        404:
+          description: Start date not found
+          content: {}
+      security:
+      - api_key: []
+          
+  /sectionEnrollment/{EndDate}:
+    get:
+      tags:
+      - Section Enrollment
+      summary: Get end date for course
+      operationId: getEndDate
+      description: Get unique section ID object
+      parameters:
+      - name: EndDate
+        in: path
+        description: Get end date
+        required: true
+        schema:
+          type: string
+          format: date
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SectionEnrollment'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SectionEnrollment'
+        400:
+          description: Invalid date supplied
+          content: {}
+        404:
+          description: End date not found
+          content: {}
+      security:
+      - api_key: [] 
+          
+          
+          
+          
+  /sectionAssignmentSubmission/{SectionID}:
+    get:
+      tags:
+      - Section Assignment Submission
+      summary: Get section ID for course
+      operationId: getSubmissionSectionID
+      description: Get unique section ID object
+      parameters:
+      - name: SectionID
+        in: path
+        description: Get SectionID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SectionAssignmentSubmission'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SectionAssignmentSubmission'
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Section ID not found
+          content: {}
+      security:
+      - api_key: []   
+          
+  /sectionAssignmentSubmission/AssignmentID:
+    post:
+      tags:
+      - Section Assignment Submission
+      summary: Create assignment ID
+      operationId: addAssignmentID
+      description: Creates assignment unique ID object associated with an assignment
+      requestBody:
+        description: Created user object
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/SectionAssignmentSubmission'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
+          
+  /sectionAssignmentSubmission/{UserID}:
+    get:
+      tags:
+      - Section Assignment Submission
+      summary: Get user ID
+      operationId: getSubmissionUserID
+      description: Get unique user ID object for assignment submission
+      parameters:
+      - name: UserID
+        in: path
+        description: Get UserID
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SectionAssignmentSubmission'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SectionAssignmentSubmission'
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: User ID not found
+          content: {}
+      security:
+      - api_key: [] 
+          
+  /sectionAssignmentSubmission/SubmissionText:
+    post:
+      tags:
+      - Section Assignment Submission
+      summary: Create submission text
+      operationId: addSubmissionText
+      description: Create submission text object
+      requestBody:
+        description: Created user object
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/SectionAssignmentSubmission'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body 
+          
+  /sectionAssignmentSubmission/Score:
+    post:
+      tags:
+      - Section Assignment Submission
+      summary: Creates score
+      operationId: addScore
+      description: Create score object for assignment
+      requestBody:
+        description: Created user object
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/SectionAssignmentSubmission'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
+          
+  /sectionAssignmentSubmission/CreatedDate:
+    post:
+      tags:
+      - Section Assignment Submission
+      summary: Create created date for assignment
+      operationId: addSubmissionCreatedDate
+      description: Create created date for assignment
+      requestBody:
+        description: Created user object
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/SectionAssignmentSubmission'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body  
+          
+  /sectionAssignmentSubmission/UpdatedDate:
+    post:
+      tags:
+      - Section Assignment Submission
+      summary: Create updated date for submission
+      operationId: addSubmissionUpdatedDate
+      description: Date object for assignment submission created date
+      requestBody:
+        description: Created user object
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/SectionAssignmentSubmission'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body            
+    
+    
+    
+components:
+  schemas:
+  
+    User:
+      type: object
+      properties:
+        UserName:
+          type: string
+        Password:
+          type: string  
+          format: password
+        Email:
+          type: string
+          format: email
+        UserStatus:
+          type: string
+          description: User Status
+          enum:
+          - Online
+          - Offline
+          - Busy
+        SystemRoleID:
+          type: integer
+          format: int32  
+        CreatedDate:
+          type: string
+          format: date
+        UpdatedDate:
+          type: string
+          format: date  
+      xml:
+        name: User
+        
+        
+    Course:
+      type: object
+      properties:
+        CourseTitle:
+          type: string
+        Description:
+          type: string
+        CreateDate:
+          type: string
+          format: date
+        UpdatedDate:
+          type: string
+          format: date
+        AssignmentTitle:
+          type: string
+        AssignmentDescription:
+          type: string
+        CourseID:
+          type: integer
+          format: int32
+      xml:
+        name: Course
+        
+        
+    CourseSection:
+      type: object
+      properties:
+        CourseID:
+          type: integer
+          format: int32
+        StartDate:
+          type: string
+          format: date
+        EndDate:
+          type: string
+          format: date
+        CreatedDate:
+          type: string
+          format: date
+        UpdatedDate:
+          type: string
+          format: date
+      xml:
+        name: Course Section
+    
+    
+    SectionEnrollment:
+      type: object
+      properties:
+        SectionID:
+          type: integer
+          format: int32
+        UserID:
+          type: integer
+          format: int32
+        CreatedDate:
+          type: string
+          format: date
+        UpdatedDate:
+          type: string
+          format: date
+        StartDate:
+          type: string
+          format: date
+        EndDate:
+          type: string
+          format: date
+      xml:
+        name: Section Enrollment
+        
+        
+    SectionAssignmentSubmission:
+      required:
+      - name
+      - photoUrls
+      type: object
+      properties:
+        SectionID:
+          type: integer
+          format: int32
+        AssignmentID:
+          type: integer
+          format: int32
+        UserID:
+          type: integer
+          format: int32
+        SubmissionText:  
+          type: string
+        Score:
+          type: integer
+          format: int32
+        CreatedDate:
+          type: string
+          format: date
+        UpdatedDate:
+          type: string
+          format: date
+      xml:
+        name: Section Assignment Submission
+        
+        
+  securitySchemes:
+    system_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: http://petstore.swagger.io/oauth/dialog
+          scopes:
+            write:user: modify user in system
+            read:user: read your user
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
